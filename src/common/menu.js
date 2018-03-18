@@ -1,7 +1,7 @@
 import { isUrl } from '../utils/utils';
 
 const menuData = [{
-  name: 'dashboard',
+  name: 'test',
   icon: 'dashboard',
   path: 'test',
   children: [{
@@ -12,9 +12,28 @@ const menuData = [{
   name: 'user',
   icon: 'dashboard',
   path: 'user',
+  authority: 'guest',
   children: [{
     name: 'lists',
     path: 'lists',
+  }],
+}, {
+  name: '异常页',
+  icon: 'warning',
+  path: 'exception',
+  children: [{
+    name: '403',
+    path: '403',
+  }, {
+    name: '404',
+    path: '404',
+  }, {
+    name: '500',
+    path: '500',
+  }, {
+    name: '触发异常',
+    path: 'trigger',
+    hideInMenu: true,
   }],
 }];
 

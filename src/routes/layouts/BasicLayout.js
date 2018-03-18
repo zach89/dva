@@ -12,9 +12,11 @@ import classNames from 'classnames';
 import { getMenuData } from '@/common/menu';
 import { getRoutes } from '@/utils/utils';
 import Authorized from '@/utils/Authorized';
+import logo from '@/assets/logo.svg';
 
-import SiderMenu from './SiderMenu';
+import SiderMenu from './SiderMenu/index';
 import NotFound from '../Exception/404';
+import style from './BasicLayout.less';
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -39,7 +41,7 @@ const getRedirect = (item) => {
   }
 };
 getMenuData().forEach(getRedirect);
-
+// console.log(redirectData);
 const query = {
   'screen-xs': {
     maxWidth: 575,
@@ -101,13 +103,18 @@ class BasicLayout extends React.PureComponent {
     return title;
   }
   getBashRedirect = () => {
+    // According to the url parameter to redirect
+    // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
     const urlParams = new URL(window.location.href);
+
     const redirect = urlParams.searchParams.get('redirect');
+    // Remove the parameters in the url
     if (redirect) {
       urlParams.searchParams.delete('redirect');
       window.history.replaceState(null, 'redirect', urlParams.href);
     } else {
       const { routerData } = this.props;
+      // get the first authorized route path in routerData
       const authorizedPath = Object.keys(routerData).find(item =>
         check(routerData[item].authority, item) && item !== '/');
       return authorizedPath;
@@ -116,24 +123,36 @@ class BasicLayout extends React.PureComponent {
   }
   render() {
     const {
-      currentUser, routerData, match, location,
+      currentUser, routerData, match, location, collapsed,
     } = this.props;
     const bashRedirect = this.getBashRedirect();
     const layout = (
-      <Layout>
-        <SiderMenu location={location} />
+      <Layout className={style.layout}>
+        <SiderMenu
+          logo={logo}
+          // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
+          // If you do not have the Authorized parameter
+          // you will be forced to jump to the 403 interface without permission
+          Authorized={Authorized}
+          menuData={getMenuData()}
+          collapsed={collapsed}
+          location={location}
+          isMobile={this.state.isMobile}
+          onCollapse={this.handleMenuCollapse}
+        />
         <Layout>
           <Header>
             currentUser: {currentUser}
             isMobile: {this.state.isMobile}
           </Header>
-          <Content>
+          <Content className={style.main}>
             <Switch>
-              {
-                redirectData.map(item =>
-                  <Redirect key={item.from} exact from={item.from} to={item.to} />
+              {/* {
+                redirectData.map((item) => {
+                  return (<Redirect key={item} exact from={item.from} to={item.to} />);
+                }
                 )
-              }
+              } */}
               {
                 getRoutes(match.path, routerData).map(item =>
                   (
@@ -148,11 +167,11 @@ class BasicLayout extends React.PureComponent {
                   )
                 )
               }
-              <Redirect exact from="/test/hello" to={bashRedirect} />
+              <Redirect exact from="/" to={bashRedirect} />
               <Route render={NotFound} />
             </Switch>
           </Content>
-          <Footer>
+          <Footer className={style.footer}>
             footer
           </Footer>
         </Layout>

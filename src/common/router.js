@@ -73,14 +73,26 @@ export const getRouterData = (app) => {
     '/': {
       component: dynamicWrapper(app, [], () => import('../routes/layouts/BasicLayout')),
     },
-    '/test/hello': {
-      component: dynamicWrapper(app, [], () => import('../routes/User/User')),
-    },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../routes/layouts/UserLayout')),
     },
+    '/test/hello': {
+      component: dynamicWrapper(app, [], () => import('../routes/Index/index')),
+    },
     '/user/list': {
       component: dynamicWrapper(app, [], () => import('../routes/User/User')),
+    },
+    '/exception/403': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
+    },
+    '/exception/404': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
+    },
+    '/exception/500': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/500')),
+    },
+    '/exception/trigger': {
+      component: dynamicWrapper(app, ['error'], () => import('../routes/Exception/triggerException')),
     },
     // '/user/:id': {
     //   component: dynamicWrapper(app, [], () => import('../routes/User/SomeComponent')),

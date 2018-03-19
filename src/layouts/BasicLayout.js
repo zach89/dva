@@ -15,8 +15,9 @@ import Authorized from '@/utils/Authorized';
 import logo from '@/assets/logo.svg';
 
 import SiderMenu from './SiderMenu/index';
-import NotFound from '../Exception/404';
+import NotFound from '../routes/Exception/404';
 import style from './BasicLayout.less';
+// import './BasicLayout.less';
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -141,9 +142,11 @@ class BasicLayout extends React.PureComponent {
           onCollapse={this.handleMenuCollapse}
         />
         <Layout>
-          <Header>
-            currentUser: {currentUser}
-            isMobile: {this.state.isMobile}
+          <Header className={style.header}>
+            <div className={style.headerContent}>
+              currentUser: {currentUser}
+              isMobile: {this.state.isMobile}
+            </div>
           </Header>
           <Content className={style.main}>
             <Switch>
@@ -154,8 +157,9 @@ class BasicLayout extends React.PureComponent {
                 )
               } */}
               {
-                getRoutes(match.path, routerData).map(item =>
-                  (
+                getRoutes(match.path, routerData).map((item) => {
+                  // console.log(item);
+                  return (
                     <AuthorizedRoute
                       key={item.key}
                       path={item.path}
@@ -164,8 +168,8 @@ class BasicLayout extends React.PureComponent {
                       authority={item.authority}
                       redirectPath="/exception/403"
                     />
-                  )
-                )
+                  );
+              })
               }
               <Redirect exact from="/" to={bashRedirect} />
               <Route render={NotFound} />

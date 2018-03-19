@@ -1,12 +1,15 @@
 import { isUrl } from '../utils/utils';
 
 const menuData = [{
-  name: 'test',
+  name: 'main',
   icon: 'dashboard',
-  path: 'test',
+  path: 'main',
   children: [{
-    name: 'hello world!',
-    path: 'hello',
+    name: 'test',
+    path: 'test',
+  }, {
+    name: 'charts',
+    path: 'charts',
   }],
 }, {
   name: 'user',
